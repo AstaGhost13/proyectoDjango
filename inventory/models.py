@@ -204,6 +204,7 @@ class Product(models.Model):
         verbose_name="Código",
         unique=True,
     )
+    
     description = models.CharField(
         max_length=5000,
         blank=False,

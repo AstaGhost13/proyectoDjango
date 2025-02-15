@@ -32,6 +32,7 @@ class AsignacionProductoAdmin(admin.ModelAdmin):
     list_display = (
         'pkid', 
         'id',
+        'status',
         'custodiam__first_name',
         'custodiam__last_name',
         'custodiam__position__description',
