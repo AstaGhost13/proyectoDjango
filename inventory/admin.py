@@ -12,14 +12,17 @@ class BrandAdmin(admin.ModelAdmin):
 admin.site.register(Brand, BrandAdmin)
 
 
+
+
 class PrototypeAdmin(admin.ModelAdmin):
-    list_display = ('pkid', 'id', 'status', 'description', 'brand' )
+    list_display = ('pkid', 'id', 'status', 'description', 'brand', 'tipo' )
     search_fields = ('description',)
     list_filter = ('status',)
+    
 admin.site.register(Prototype, PrototypeAdmin)
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('pkid', 'id', 'status', 'description', 'serie', 'prototype')
+    list_display = ('pkid', 'codigo', 'id', 'status', 'description', 'serie', 'prototype')
     search_fields = ('description', 'serie')
     list_filter = ('status',)
 admin.site.register(Product, ProductAdmin)

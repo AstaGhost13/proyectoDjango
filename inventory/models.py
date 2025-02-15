@@ -66,7 +66,8 @@ class Brand(models.Model):
 
         
     def __str__(self):
-        return f"{self.description}"
+        return f"{self.description} ({self.tipo})"
+
 
     def save(self, *args, **kwargs):
             # Convertir la descripción a mayúsculas antes de validar
@@ -121,6 +122,16 @@ class Prototype(models.Model):
         verbose_name="Descripción",
         unique=True,
     )
+    
+    tipo = models.CharField(
+        max_length=1,
+        choices=TipoMarca.OPCIONES,  # Usa las opciones de la clase
+        blank=True,
+        null=True,
+        verbose_name=_("Tipo de marca"),
+    )
+    
+    
     brand = models.ForeignKey(
         Brand,
         verbose_name="Marca",
@@ -129,14 +140,42 @@ class Prototype(models.Model):
         null=True,
         related_name="fk_prototype_brand",
     )
+    
+    def clean(self):
+        # Verificar si la marca tiene un tipo
+        if not self.tipo and self.brand:
+            raise ValidationError("Debes seleccionar un tipo antes de elegir una marca.")
 
+        if self.tipo and self.brand and self.brand.tipo != self.tipo:
+            raise ValidationError(f"La marca '{self.brand.description}' no pertenece al tipo '{dict(TipoMarca.OPCIONES).get(self.tipo)}'.")
+
+        super().clean()
+
+    
+    def get_brand_type(self):
+        # Devuelve el tipo de la marca asociada, si existe
+        if self.brand:
+            return self.brand.tipo
+        return None
+    
+    def get_descriptions_for_type(self):
+        # Filtrar marcas según el tipo seleccionado
+        if self.tipo:
+            marcas_filtradas = Brand.objects.filter(tipo=self.tipo)
+            return [
+                f"{marca.description} ({dict(TipoMarca.OPCIONES).get(self.tipo)})" for marca in marcas_filtradas
+            ]
+        return []
     def __str__(self):
-        return f"{self.description}"
-
+            brand_str = str(self.brand) if self.brand else "Sin marca"
+            return f"{self.description} - {brand_str} - Tipo de Marca: {self.tipo}"
+        
+    # Prueba de filtro
+    
     class Meta:
-        verbose_name_plural = "Modelo"
+        verbose_name_plural = "Modelos"
         db_table = "tb_prototype"
-        verbose_name = "Modelos"
+        verbose_name = "Modelo"
 
 
 class Product(models.Model):
@@ -157,6 +196,14 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     status = models.BooleanField(default=True)
+    
+    codigo = models.CharField(
+        max_length=5000,
+        null=True,
+        blank=False,
+        verbose_name="Código",
+        unique=True,
+    )
     description = models.CharField(
         max_length=5000,
         blank=False,
@@ -164,6 +211,7 @@ class Product(models.Model):
         verbose_name="Descripción",
         unique=True,
     )
+    
     serie = models.CharField(
         max_length=5000, blank=False, null=False, verbose_name="Serie", unique=True
     )
@@ -227,3 +275,4 @@ class AsignacionProduct(models.Model):
         verbose_name_plural = "Asignación de Productos"
         db_table = "tb_asignacion_product"
         verbose_name = "Asignación de Productos"
+
