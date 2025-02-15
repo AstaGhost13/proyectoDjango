@@ -1,17 +1,14 @@
 from django.utils.translation import gettext_lazy as _
 
 class TipoMarca:
-    DELL = 'A'
-    LENOVO = 'B'
-    HP = 'C'
-    ASUS = 'D'
-    OTROS = 'E'
+    PERIFERICOS = 'A'
+    EOFICINA = 'B'
+    ECOMPUTO = 'C'
+    OTROS = 'D'
 
     OPCIONES = [
-        (DELL, _('DELL')),
-        (LENOVO, _('LENOVO')),
-        (HP, _('HP')),
-        (ASUS, _('ASUS')),
+        (PERIFERICOS, _('PERIFERICOS')),
+        (EOFICINA, _('EQUIPOS DE OFICINA')),
+        (ECOMPUTO, _('EQUIPOS DE COMPUTO')),
         (OTROS, _('OTROS')),
-
     ]

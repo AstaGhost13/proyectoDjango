@@ -30,10 +30,7 @@ class Brand(models.Model):
     
     
     created_at = models.DateTimeField(auto_now_add=True)
-    
-    
     updated_at = models.DateTimeField(auto_now=True)
-
     status = models.BooleanField(default=True)
 
     description = models.CharField(
@@ -41,9 +38,8 @@ class Brand(models.Model):
         blank=False,
         null=False,
         verbose_name="Descripción",
-        unique=True,
-        
     )
+    
     tipo = models.CharField(
         max_length=1,
         choices=TipoMarca.OPCIONES,  # Usa las opciones de la clase
@@ -55,38 +51,36 @@ class Brand(models.Model):
     def clean(self):
         # Convertir la descripción a mayúsculas
         self.description = self.description.upper()
+
+        # Verificar si la descripción ya existe en el mismo tipo
+        if self.tipo:  # Avoid the check if tipo is not selected.
+            if Brand.objects.filter(description=self.description, tipo=self.tipo).exclude(pk=self.pk).exists():
+                raise ValidationError({
+                    'description': f'La descripción "{self.description}" ya existe para el tipo "{dict(TipoMarca.OPCIONES).get(self.tipo)}".'
+                })
+        super().clean()  # Always call super().clean()
+
         
-        # Validar si ya existe otra marca con la misma descripción
-        if Brand.objects.filter(description=self.description).exclude(pk=self.pk).exists():
-            raise ValidationError({'description': 'Ya existe una marca con esta descripción.'})
-    
     def __str__(self):
         return f"{self.description}"
 
     def save(self, *args, **kwargs):
-        self.full_clean()
-        # Convertir la descripción a mayúsculas antes de guardar
+            # Convertir la descripción a mayúsculas antes de validar
         self.description = self.description.upper()
-
-        # Obtener la primera palabra de la descripción (asumiendo que es la marca)
-        marca_ingresada = self.description.split()[0]  # Ya está en mayúsculas
-
-        # Validar si la marca ingresada está en las opciones predefinidas
-        marcas_predefinidas = [
-            opcion[1].upper() for opcion in TipoMarca.OPCIONES
-        ]  # ['DELL', 'LENOVO', 'HP', 'ASUS', 'OTROS']
-
-        if marca_ingresada in marcas_predefinidas:
-            # Asignar el tipo correspondiente basado en la marca ingresada
-            for codigo, nombre in TipoMarca.OPCIONES:
-                if nombre.upper() == marca_ingresada:
-                    self.tipo = codigo.upper()  # Convertir el código a mayúsculas
+        palabras_descripcion = self.description.split()
+        marcas_predefinidas = {
+                nombre.upper(): codigo for codigo, nombre in TipoMarca.OPCIONES
+            }
+        # Verificar palabra por palabra
+        if not self.tipo:  
+            for palabra in palabras_descripcion:
+                if palabra in marcas_predefinidas:
+                    self.tipo = marcas_predefinidas[palabra]
                     break
-        else:
-            # Si la marca no está registrada, asignar "OTROS"
-            self.tipo = TipoMarca.OTROS.upper()  # Convertir "OTROS" a mayúsculas
+            else:
+                self.tipo = TipoMarca.OTROS
 
-        # Guardar la instancia
+        # Validar antes de guardar
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -94,6 +88,7 @@ class Brand(models.Model):
         verbose_name_plural = "Marcas"
         db_table = "tb_brand"
         verbose_name = "Marca"
+        unique_together = ('description', 'tipo') # Add this line
 
 
 class Prototype(models.Model):
