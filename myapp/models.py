@@ -44,7 +44,7 @@ class Department(models.Model):
 
     def __str__(self):
         if self.parent:
-          return f"{self.parent.description} -> {self.description}"
+            return f"{self.parent.description} -> {self.description}"
         return self.description
 
     class Meta:
@@ -94,13 +94,20 @@ class Custodiam(models.Model):
     address = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Address'))
     reference = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Reference'))
     email = models.EmailField(verbose_name=_("Email Address"), unique=True, db_index=True)
-   
     position = models.ForeignKey(Position, verbose_name=('Cargo'), on_delete=models.SET_NULL, blank=True, null=True, related_name="custodiams")
 
 
     def __str__(self):
-       position_str = str(self.position) if self.position else "No Position"
-       return f"{position_str} {self.first_name} {self.last_name}"
+        position_str = str(self.position) if self.position else "No Position"
+        return f"{position_str} {self.first_name} {self.last_name}"
+    def save(self, *args, **kwargs):
+        self.first_name = self.first_name.upper()
+        self.last_name = self.last_name.upper()
+        self.phone_number = self.phone_number.upper() if self.phone_number else None
+        self.address = self.address.upper() if self.address else None
+        self.reference = self.reference.upper() if self.reference else None
+        self.email = self.email.upper()
+        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name_plural = _('Custodios')

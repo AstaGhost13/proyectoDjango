@@ -48,6 +48,10 @@ class Brand(models.Model):
         verbose_name=_("Tipo"),
     )
     
+    # Prueba para el formulario
+    def get_description(self):
+        return f"{self.description} ({dict(TipoMarca.OPCIONES).get(self.tipo)})"
+    
     def clean(self):
         # Convertir la descripción a mayúsculas
         self.description = self.description.upper()
