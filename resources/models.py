@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 import uuid
 
 from inventory.models import *
-from resources.enums.tipo_disco import TipoDisco
+from resources.enums.tipo_disco import *
 # Create your models here.
 
 class Hardware(models.Model):
@@ -197,6 +197,9 @@ class DisplayName(models.Model):
 
 
 class DateOperation(models.Model):
+
+    
+      
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
@@ -232,6 +235,15 @@ class DateOperation(models.Model):
         null=False,   # Permite valores nulos en la base de datos
     )
 
+
+
+    running_time = models.CharField(
+        max_length=10,
+        choices=TiempoFuncionamiento.OPCIONES,  # Usa las opciones de la clase
+        blank=True,
+        null=True,
+        verbose_name=_("Tiempo de funcionamiento"),
+    )
 
    
     

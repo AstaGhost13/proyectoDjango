@@ -270,7 +270,8 @@ class AsignacionProduct(models.Model):
     )
 
     def __str__(self):
-        return f"{self.product}"
+        return f"{self.product }"
+
 
     class Meta:
         verbose_name_plural = "Asignación de Productos"

@@ -18,9 +18,9 @@ class Floor(models.Model):
     description = models.CharField(max_length=5000, blank=False, null=False, verbose_name='Descripción', unique=True)
 
 
+    
     def __str__(self):
         return self.description
-
 
     class Meta:
         verbose_name_plural = 'Pisos'
@@ -99,7 +99,7 @@ class Custodiam(models.Model):
 
     def __str__(self):
         position_str = str(self.position) if self.position else "No Position"
-        return f"{position_str} {self.first_name} {self.last_name}"
+        return f"{position_str} -> {self.first_name} {self.last_name}"
     def save(self, *args, **kwargs):
         self.first_name = self.first_name.upper()
         self.last_name = self.last_name.upper()

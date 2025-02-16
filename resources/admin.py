@@ -54,6 +54,7 @@ class DateOperationAdmin(admin.ModelAdmin):
         'status',
         'product__description',
         'date',
+        'running_time',
     )
 admin.site.register(DateOperation, DateOperationAdmin)
 
