@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+    <!-- Contenedor principal -->
+    <div class="content-wrapper">
+        <!-- Cabecera del contenido -->
+        <section class="content-header">
+            <h1>Bienvenido al Dashboard</h1>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </section>
+
+        <!-- Cuerpo del contenido -->
+        <section class="content">
+            <div class="row">
+                <!-- Tarjeta 1 -->
+                <div class="col-lg-6 col-12">
+                    <div class="card bg-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Usuarios Activos</h3>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-text">150</h3>
+                            <p>Usuarios conectados en este momento</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="col-lg-6 col-12">
+                    <div class="card bg-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Pedidos Completados</h3>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-text">80</h3>
+                            <p>Pedidos completados en el último mes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

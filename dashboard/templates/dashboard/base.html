@@ -1,0 +1,334 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Incluir AdminLTE CSS -->
+    <link href="{% static 'admin-lte/dist/css/adminlte.min.css' %}" rel="stylesheet">
+    <!-- Incluir Font Awesome (opcional, usado para los iconos) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Incluir Chart.js (para los gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar (opcional) -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">AdminLTE</a>
+            </div>
+        </nav>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <!-- Card 1: Gráfico de Ventas con encabezado y botones -->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <!-- Header -->
+                                <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+                                    <h3 class="card-title">
+                                      <i class="fas fa-th mr-1"></i>
+                                      Sales Graph
+                                    </h3>
+
+                                    <div class="card-tools">
+                                      <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                      </button>
+                                      <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <canvas id="salesChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Datos -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Tabla de Productos</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Producto A</td>
+                                                <td>$10.00</td>
+                                                <td>150</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Producto B</td>
+                                                <td>$20.00</td>
+                                                <td>200</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Producto C</td>
+                                                <td>$30.00</td>
+                                                <td>120</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>Producto D</td>
+                                                <td>$40.00</td>
+                                                <td>80</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End Main content -->
+            </div>
+        </div>
+        <!-- End Content Wrapper -->
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Messages</span>
+              <span class="info-box-number">1,410</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Bookmarks</span>
+              <span class="info-box-number">410</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Uploads</span>
+              <span class="info-box-number">13,648</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Likes</span>
+              <span class="info-box-number">93,139</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <div class="card">
+        <div class="card-header border-transparent">
+          <h3 class="card-title">Latest Orders</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table m-0">
+              <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Popularity</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                <td>Call of Duty IV</td>
+                <td><span class="badge badge-success">Shipped</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                <td>iPhone 6 Plus</td>
+                <td><span class="badge badge-danger">Delivered</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="badge badge-info">Processing</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                <td>iPhone 6 Plus</td>
+                <td><span class="badge badge-danger">Delivered</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                <td>Call of Duty IV</td>
+                <td><span class="badge badge-success">Shipped</span></td>
+                <td>
+                  <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.table-responsive -->
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer clearfix">
+          <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+          <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+        </div>
+        <!-- /.card-footer -->
+      </div>
+      <div class="card bg-gradient-info">
+        <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+          <h3 class="card-title">
+            <i class="fas fa-th mr-1"></i>
+            Sales Graph
+          </h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+          <canvas class="chart chartjs-render-monitor" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 314px;" width="314" height="250"></canvas>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer bg-transparent">
+          <div class="row">
+            <div class="col-4 text-center">
+              <div style="display:inline;width:60px;height:60px;"><canvas width="60" height="60"></canvas><input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; appearance: none;"></div>
+
+              <div class="text-white">Mail-Orders</div>
+            </div>
+            <!-- ./col -->
+            <div class="col-4 text-center">
+              <div style="display:inline;width:60px;height:60px;"><canvas width="60" height="60"></canvas><input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; appearance: none;"></div>
+
+              <div class="text-white">Online</div>
+            </div>
+            <!-- ./col -->
+            <div class="col-4 text-center">
+              <div style="display:inline;width:60px;height:60px;"><canvas width="60" height="60"></canvas><input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; appearance: none;"></div>
+
+              <div class="text-white">In-Store</div>
+            </div>
+            <!-- ./col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.card-footer -->
+      </div>
+
+    <!-- Incluir AdminLTE JS -->
+    <script src="{% static 'admin-lte/dist/js/adminlte.min.js' %}"></script>
+
+    <!-- Configuración del gráfico -->
+    <script>
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var salesChart = new Chart(ctx, {
+            type: 'line', // Tipo de gráfico (puede ser 'line', 'bar', 'pie', etc.)
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril'], // Ejes X (Meses)
+                datasets: [{
+                    label: 'Ventas Mensuales', // Título del gráfico
+                    data: [1500, 2000, 2500, 1800], // Datos (ventas)
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
