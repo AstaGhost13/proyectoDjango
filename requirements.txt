@@ -1,2 +1,4 @@
 Django
 django-currentuser
+django-admin-adminlte
+django-adminlte-3

@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django_currentuser',
     'django.contrib.messages',
+    # 'adminlte3',
+    'adminlte3',
+    'adminlte3_theme',  
     'django.contrib.staticfiles',
+    'admin_adminlte.apps.AdminAdminlteConfig',
+    
+    # 
     'myapp',
     'inventory',
     'resources',
